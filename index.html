@@ -1,0 +1,107 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Catching The Ghost</title>
+
+    <meta name="description" content="Ghostbusters Game">
+    <meta name="author" content="SlowDecay">
+
+    <link rel="icon" type="image/png" href="images/ghost.png">
+    <link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>
+    <div id="config-container">
+        <h3>Board size:</h3>
+        <label class="config-label">Rows: </label>
+        <input type="number" class = "config-input" id="rows" min="1" max="16" value="9">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label class="config-label">Cols: </label>
+        <input type="number" class = "config-input" id="cols" min="1" max="16" value="9">
+
+        <h3>Transition probability</h3>
+        <label class="config-label">Up: </label>
+        <input type="number" class = "config-input transp" id="up-p" min="1" max="100" value="24"> %
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label class="config-label">Left: </label>
+        <input type="number" class = "config-input transp" id="down-p" min="1" max="100" value="24"> %
+        <br>
+        <label class="config-label">Down: </label>
+        <input type="number" class = "config-input transp" id="left-p" min="1" max="100" value="24"> %
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label class="config-label">Right: </label>
+        <input type="number" class = "config-input transp" id="right-p" min="1" max="100" value="24"> %
+        <br>
+        <label class="config-label">Up-left: </label>
+        <input type="number" class = "config-input transp" id="up-left-p" min="1" max="100" value="0.8"> %
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label class="config-label">Down-left: </label>
+        <input type="number" class = "config-input transp" id="down-left-p" min="1" max="100" value="0.8"> %
+        <br>
+        <label class="config-label">Down-right: </label>
+        <input type="number" class = "config-input transp" id="down-right-p" min="1" max="100" value="0.8"> %
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label class="config-label">Up-right: </label>
+        <input type="number" class = "config-input transp" id="up-right-p" min="1" max="100" value="0.8"> %
+        <br>
+        <label class="config-label">Same position: </label>
+        <input type="number" class = "config-input transp" id="same-p" min="1" max="100" value="0.8" readonly> %
+
+        <h3>Sensor probability</h3>
+        <label class="config-label">Near: </label>
+        <input type="number" class = "config-input" id="near" min="1" max="16" value="2">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label class="config-label">Far: </label>
+        <input type="number" class = "config-input" id="far" min="1" max="16" value="5">
+
+        <h4>On close</h4>
+        <label class="config-label">Red: </label>
+        <input type="number" class = "config-input sensor-close-p" id="close-red-p" min="1" max="100" value="80"> %
+        <br>
+        <label class="config-label">Orange: </label>
+        <input type="number" class = "config-input sensor-close-p" id="close-orange-p" min="1" max="100" value="15"> %
+        <br>
+        <label class="config-label">Green: </label>
+        <input type="number" class = "config-input sensor-close-p" id="close-green-p" min="1" max="100" value="5" readonly> %
+
+        <h4>On medium</h4>
+        <label class="config-label">Red: </label>
+        <input type="number" class = "config-input sensor-medium-p" id="medium-red-p" min="1" max="100" value="15"> %
+        <br>
+        <label class="config-label">Orange: </label>
+        <input type="number" class = "config-input sensor-medium-p" id="medium-orange-p" min="1" max="100" value="80"> %
+        <br>
+        <label class="config-label">Green: </label>
+        <input type="number" class = "config-input sensor-medium-p" id="medium-green-p" min="1" max="100" value="5" readonly> %
+
+        <h4>On far</h4>
+        <label class="config-label">Red: </label>
+        <input type="number" class = "config-input sensor-far-p" id="far-red-p" min="1" max="100" value="5"> %
+        <br>
+        <label class="config-label">Orange: </label>
+        <input type="number" class = "config-input sensor-far-p" id="far-orange-p" min="1" max="100" value="15"> %
+        <br>
+        <label class="config-label">Green: </label>
+        <input type="number" class = "config-input sensor-far-p" id="far-green-p" min="1" max="100" value="80" readonly> %
+
+        <br><br>
+        <label class="config-label">Ghosts: </label>
+        <input type="number" class = "config-input ghosts" id="ghosts" min="1" max="10" value="1">
+        <br>
+        <br>
+        <input type="button" class="config-input" id = "set-board" value="Set board">
+    </div>
+    <div id="board-container"></div>
+    <script src="js/scripts.js"></script>
+</body>
+</html>

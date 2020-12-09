@@ -1,0 +1,69 @@
+body {
+    margin: 0;
+    padding-left: 1rem;
+    height: 100%;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#config-container {
+    /*background-color: blue;*/
+    width: 40%;
+    height: 100%;
+    float: left;
+    border-right: 5px solid;
+    font-size: medium;
+}
+#board-container {
+    /*background-color: red;*/
+    height: 100%;
+}
+
+.config-input {
+    width: 10%;
+}
+
+#set-board {
+    width: initial;
+}
+
+.transp::-webkit-outer-spin-button,
+.transp::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.transp {
+    -moz-appearance: textfield;
+}
+
+.config-label {
+    display: inline-block;
+    width: 9rem;
+}
+
+table {
+    margin: auto;
+    padding: 10rem 2rem 5rem;
+}
+
+table:hover {
+    cursor: default;
+}
+
+td {
+
+    border: 1px solid black;
+    width: 4rem;
+    height: 4rem;
+    text-align: center;
+    font-size: larger;
+}
+
+.game-button {
+    margin-left: 20rem;
+    font-size: x-large;
+    background-color: initial;
+    width: 7rem;
+    height: 4rem;
+    border: 2px solid red;
+    border-radius: 1rem;
+}
