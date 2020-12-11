@@ -42,7 +42,7 @@ body {
 
 table {
     margin: auto;
-    padding: 10rem 2rem 5rem;
+    padding: 4rem 2rem 5rem;
 }
 
 table:hover {
@@ -66,4 +66,21 @@ td {
     height: 4rem;
     border: 2px solid red;
     border-radius: 1rem;
+}
+
+.state-0 {
+    background-color: red;
+}
+
+.state-1 {
+    background-color: orange;
+}
+
+.state-2 {
+    background-color: green;
+}
+
+.game-text {
+    font-size: larger;
+    margin: 2rem;
 }
