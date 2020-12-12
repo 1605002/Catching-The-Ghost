@@ -6,20 +6,11 @@ body {
 }
 
 #config-container {
-    /*background-color: blue;*/
-    width: 40%;
-    height: 100%;
-    float: left;
-    border-right: 5px solid;
-    font-size: medium;
-}
-#board-container {
-    /*background-color: red;*/
-    height: 100%;
+    font-size: small;
 }
 
 .config-input {
-    width: 10%;
+    width: 3%;
 }
 
 #set-board {
@@ -27,22 +18,32 @@ body {
 }
 
 .transp::-webkit-outer-spin-button,
-.transp::-webkit-inner-spin-button {
+.transp::-webkit-inner-spin-button,
+.sensor-close-p::-webkit-outer-spin-button,
+.sensor-close-p::-webkit-inner-spin-button,
+.sensor-medium-p::-webkit-outer-spin-button,
+.sensor-medium-p::-webkit-inner-spin-button,
+.sensor-far-p::-webkit-outer-spin-button,
+.sensor-far-p::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
 
-.transp {
+.transp, .sensor-close-p, .sensor-medium-p, .sensor-far-p {
     -moz-appearance: textfield;
 }
 
 .config-label {
     display: inline-block;
-    width: 9rem;
+}
+
+.fake {
+    display: inline-block;
+    width: 2rem;
 }
 
 table {
     margin: auto;
-    padding: 4rem 2rem 5rem;
+    padding: 1rem;
 }
 
 table:hover {
@@ -52,18 +53,18 @@ table:hover {
 td {
 
     border: 1px solid black;
-    width: 4rem;
-    height: 4rem;
+    width: 2.7rem;
+    height: 2.7rem;
     text-align: center;
-    font-size: larger;
+    font-size: small;
 }
 
 .game-button {
-    margin-left: 20rem;
-    font-size: x-large;
+    margin-left: 2rem;
+    margin-bottom: 2rem;
     background-color: initial;
-    width: 7rem;
-    height: 4rem;
+    width: 4rem;
+    height: 2rem;
     border: 2px solid red;
     border-radius: 1rem;
 }
@@ -80,7 +81,28 @@ td {
     background-color: green;
 }
 
+.state-3 {
+    background-color: white;
+}
+
+.state-4 {
+    background-color: #f5d3ed;
+}
+
+.state-5 {
+    background-color: #f084d6;
+}
+
+.state-6 {
+    background-color: #d611a7;
+}
+
+.state-7 {
+    background-color: #8c006b;
+}
+
 .game-text {
-    font-size: larger;
+    display: inline-block;
+    font-size: large;
     margin: 2rem;
 }

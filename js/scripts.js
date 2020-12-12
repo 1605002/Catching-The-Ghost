@@ -58,6 +58,8 @@ for(let farp of sensorFarps) {
     farp.addEventListener("blur", calcFarGreen);
 }
 
+/******************************** Main code starts ***********************************/
+
 let n, m, g;
 let near, far;
 let belief;
@@ -77,6 +79,8 @@ let initialize = () => {
     calcMediumGreen();
     calcFarGreen();
 
+    /* Initialize n, m, g, near and far */
+
     n = document.getElementById("rows").value;
     m = document.getElementById("cols").value;
     g = document.getElementById("ghosts").value;
@@ -88,6 +92,8 @@ let initialize = () => {
 
     let tableGrid = document.createElement("table");
     bcont.appendChild(tableGrid);
+
+    /* Initialize the html table to show probabilites */
 
     belief = [];
 
@@ -104,9 +110,10 @@ let initialize = () => {
             newRow.appendChild(newCell);
 
             newCell.id = `cell-${i}-${j}`;
-            newCell.textContent = (belief[i][j]*100).toFixed(2);
         }
     }
+
+    /* Create ghosts and initialize them */
 
     ghostsx = [], ghostsy = [];
     for(let k = 0; k < g; k++) {
@@ -129,6 +136,8 @@ let initialize = () => {
         }
     }
 
+    /* Create transition probability table */
+
     transp = [];
     for(let i1 = 0; i1 < n; i1++) {
         transp.push([]);
@@ -140,6 +149,8 @@ let initialize = () => {
             }
         }
     }
+
+    /* Generate transition probabilities from all cells to all cells */
 
     movep = [innerValp("up-p"), innerValp("down-p"), innerValp("left-p"), innerValp("right-p"), innerValp("up-left-p"),
             innerValp("down-left-p"), innerValp("down-right-p"), innerValp("up-right-p"), innerValp("same-p")];
@@ -160,12 +171,16 @@ let initialize = () => {
         }
     }
 
+    // Generate sensor probabilies
+
     sensorp = [[], [], []];
     let fw = ["close", "medium", "far"], sw = ["red", "orange", "green"];
 
     for(let i = 0; i < 3; i++) {
         for(let j = 0; j < 3; j++) sensorp[i][j] = document.getElementById(`${fw[i]}-${sw[j]}-p`).value/100;
     }
+
+    /* A function that returns a new n*m size 0 filled 2D array */
 
     let getTmpBoard = () => {
         let tmpBoard = [];
@@ -176,6 +191,8 @@ let initialize = () => {
 
         return tmpBoard;
     }
+
+    // Normalize the belief[][] array. Take the sum of all elements and divide each element by it
 
     let normalize = () => {
         let sump = 0;
@@ -188,12 +205,35 @@ let initialize = () => {
         }
     };
 
+    /* Used to determine the color class of the a not-sensed cell by its probability */
+
+    let whichCol = p => {
+        if(p < 0.00005) return 3;
+        if(p < 0.1) return 4;
+        if(p < 0.4) return 5;
+        if(p < 0.5) return 6;
+        return 7;
+    }
+
+    /* Set the html table[i][j] cell textContent to belief[i][j]  */
+
     let setTextTable = () => {
         for(let i = 0; i < n; i++) {
-            for(let j = 0; j < m; j++)
-                document.getElementById(`cell-${i}-${j}`).textContent = (belief[i][j]*100).toFixed(2);
+            for(let j = 0; j < m; j++) {
+                let cell = document.getElementById(`cell-${i}-${j}`);
+                cell.textContent = (belief[i][j]*100).toFixed(2);
+
+                let classname = cell.className;
+                if(classname !== "state-0" && classname !== "state-1"
+                && classname !== "state-2") cell.className = `state-${whichCol(belief[i][j])}`;
+            }        
         }
     }
+
+    /* Initialize the first table */
+    setTextTable();
+
+    /* Determines which category (close, medium, far) the distance falls in */
 
     let whichd = d => {
         console.assert(d >= 0);
@@ -203,7 +243,11 @@ let initialize = () => {
         return 2;
     };
 
-    let getDist = (i1, j1, i2, j2) => Math.abs(i1-i2)+Math.abs(j1-j2); 
+    /* Determines the Manhatton distance between cell (i1, j1) and (i2, j2) */
+
+    let getDist = (i1, j1, i2, j2) => Math.abs(i1-i2)+Math.abs(j1-j2);
+
+    /* Generates the sensor state of each cell. Called at the beginning and after each time advance */
 
     let sense = () => {
         sensorState = [];
@@ -233,11 +277,38 @@ let initialize = () => {
 
     sense();
 
+    /* Create 3 game text divs at the bottom */
+
+    let remg = document.createElement("div");
+    remg.className = "game-text";
+    remg.textContent = `Remaining ghosts: ${g}`;
+    bcont.appendChild(remg);
+
+    let cotg = document.createElement("div");
+    cotg.className = "game-text";
+    bcont.appendChild(cotg);
+
+    let endg = document.createElement("div");
+    endg.className = "game-text";
+    bcont.appendChild(endg);
+
+    bcont.appendChild(document.createElement("br"));
+
+    /* Create the time+1 button */
+
     let timeButton = document.createElement("button");
     timeButton.id = "time-advance";
     timeButton.classList.add("game-button");
     timeButton.textContent = "Time+1";
     bcont.appendChild(timeButton);
+
+    /**
+     * When the time+1 button is clicked, first check if the game is finished. If yes, return;
+     * Then clear the sensor color of all cells.
+     * Update the ghost locations according to the transition probability.
+     * Update the belief[][] array accrding to the transition probability.
+     * Update the html table according to belief by calling setTextTable().
+     */
 
     timeButton.addEventListener("click", () => {
         if(g == 0) return;
@@ -264,10 +335,6 @@ let initialize = () => {
 
         sense();
 
-        for(let i = 0; i < n; i++) {
-            for(let j = 0; j < m; j++) document.getElementById(`cell-${i}-${j}`).className = ""; // May be will change
-        }
-
         let tmpBoard = getTmpBoard();
 
         for(let i2 = 0; i2 < n; i2++) {
@@ -279,23 +346,28 @@ let initialize = () => {
             }
         }
 
-        let sump = 0;
         for(let i = 0; i < n; i++) {
             for(let j = 0; j < m; j++) {
                 belief[i][j] = tmpBoard[i][j];
-                sump += belief[i][j];
-                document.getElementById(`cell-${i}-${j}`).textContent = (belief[i][j]*100).toFixed(2);
+                document.getElementById(`cell-${i}-${j}`).className = "";
             }
         }
 
-        console.assert(Math.abs(sump-1) < 0.0001, "Not normalized after time advancing");
+        setTextTable();
     });
+
+    /* Create the catch button */
 
     let catchButton = document.createElement("button"), onCatch = false;
     catchButton.id = "catch";
     catchButton.classList.add("game-button");
     catchButton.textContent = "Catch";
     bcont.appendChild(catchButton);
+
+    /** 
+    * If the catch button is called and the game is not finished, 
+    * flip the onCatch boolean and update catch button background color
+    */
 
     catchButton.addEventListener("click", () => {
         if(g == 0) return;
@@ -307,18 +379,12 @@ let initialize = () => {
         else catchButton.style.backgroundColor = "initial";
     });
 
-    let remg = document.createElement("div");
-    remg.className = "game-text";
-    remg.textContent = `Remaining ghosts: ${g}`;
-    bcont.appendChild(remg);
-
-    let cotg = document.createElement("div");
-    cotg.className = "game-text";
-    bcont.appendChild(cotg);
-
-    let endg = document.createElement("div");
-    endg.className = "game-text";
-    bcont.appendChild(endg);
+    /**
+     * When a cell is clicked in catch mode, deletes all the ghosts in it.
+     * If any ghost was actaully caught, show appropriate message in game text.
+     * Set the belief of the clicked cell to 0 (as there are no more ghosts in here)
+     * Normalize the belief ara and update the html table according to it.
+     */
 
     let handleCatch = (x, y) => {
         console.log(`Tried to catch in (${x}, ${y})`);
@@ -345,7 +411,7 @@ let initialize = () => {
         cotg.textContent = txt;
 
         if(g == 0) {
-            endg.textContent = "You have won but at what cost";
+            endg.textContent = "You have won!!!";
             return;
         }
 
@@ -354,6 +420,13 @@ let initialize = () => {
         normalize();
         setTextTable();
     }
+
+    /**
+     * When a cell is clicked in sense mode, show the sensor state by changing color.
+     * If it was already clicked, do nothing.
+     * Otherwise update belief according to HMM filtering algorithm.
+     * Normalize belief[][] and update the html table.
+     */
 
     let handleSensor = (x, y) => {
         console.log(`Tried to sense in (${x}, ${y})`);
@@ -405,6 +478,13 @@ let initialize = () => {
         setTextTable();
     }
 
+    /**
+     * Add an event handler to each html table cell.
+     * If a cell is clicked, it will call either handleCatch() or handleSensor() functions.
+     * Which one will be called, that depends on the onCatch boolean.
+     * The cell number (i, j) will be passed as parameters to the called function.
+     */
+
     for(let i = 0; i < n; i++) {
         for(let j = 0; j < m; j++) {
             document.getElementById(`cell-${i}-${j}`).addEventListener("click", e => {
@@ -419,6 +499,9 @@ let initialize = () => {
         }
     }
 };
+
+/* This big initiallize() function will be called
+each time user clicks the "set-board" button and also at the beginng. */
 
 let setBoard = document.getElementById("set-board");
 setBoard.addEventListener("click", initialize);
